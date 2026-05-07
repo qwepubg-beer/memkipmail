@@ -10,8 +10,6 @@ int main()
 
     char mailslotName[] = "\\\\*\\mailslot\\demo_mailslot";
     HANDLE hMailslot;
-
-    // Открываем существующий почтовый ящик для записи
     hMailslot = CreateFile(
         mailslotName,
         GENERIC_WRITE,
@@ -29,24 +27,21 @@ int main()
         cin.get();
         return 1;
     }
-
     cout << "Connected to mailslot. Type messages (enter 'выход' to quit)." << endl;
-
     string message;
     while (true)
     {
         cout << "Message: ";
-        getline(cin, message); // используем getline для возможности пробелов
+        getline(cin, message);
 
         if (message.find("выход") != string::npos)
             break;
 
         DWORD dwBytesWritten;
-        // Передаём данные как массив символов (без завершающего нуля можно по желанию)
         if (!WriteFile(
             hMailslot,
             message.c_str(),
-            message.size(),               // реальная длина сообщения
+            message.size(),
             &dwBytesWritten,
             NULL
         ))
@@ -57,13 +52,7 @@ int main()
             cin.get();
             return 1;
         }
-
-        cout << "Message sent (" << dwBytesWritten << " bytes)." << endl;
-
-        // Очищаем поток после предыдущего ввода, если были пробелы и т.п.
-        // (при getline это не нужно, но оставим для совместимости)
     }
-
     CloseHandle(hMailslot);
     cout << "Client finished. Press any key to exit." << endl;
     cin.get();
