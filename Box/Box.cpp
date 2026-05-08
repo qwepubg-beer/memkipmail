@@ -46,8 +46,8 @@ int main()
         }
 
         // Формируем строку из прочитанных данных
-        string message(buffer, dwBytesRead); // без нуль-терминатора
-        cout << "Received: \"" << message << "\" (" << dwBytesRead << " bytes)" << endl;
+        string message(buffer, dwBytesRead);
+        cout << "Received: \"" << message << "\"  << endl;
 
         // Проверяем условие выхода
         if (message.find("выход") != string::npos)
